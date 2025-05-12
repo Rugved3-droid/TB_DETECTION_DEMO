@@ -1,3 +1,7 @@
+import os
+
+# Display the updated script for the user
+script = """
 import cv2
 import torch
 from torchvision import models, transforms
@@ -9,7 +13,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 # Load the trained model
 model = models.resnet18(weights=models.ResNet18_Weights.DEFAULT)
 model.fc = torch.nn.Linear(model.fc.in_features, 2)
-model.load_state_dict(torch.load("tb_afb_resnet18_final.pth", map_location=device))
+# Updated path to the model file inside the 'models' folder
+model.load_state_dict(torch.load("models/tb_afb_resnet18_final.pth", map_location=device))
 model.to(device)
 model.eval()
 
@@ -17,8 +22,8 @@ model.eval()
 transform = transforms.Compose([
     transforms.Resize((224, 224)),
     transforms.ToTensor(),
-    transforms.Normalize([0.485, 0.456, 0.406],  # Corrected line with comma
-                         [0.229, 0.224, 0.225])
+    transforms.Normalize([0.485, 0.456, 0.406],  # RGB mean
+                         [0.229, 0.224, 0.225])  # RGB std
 ])
 
 # Label mapping
@@ -63,5 +68,6 @@ while True:
 
 cap.release()
 cv2.destroyAllWindows()
+"""
 
- 
+print(script)
